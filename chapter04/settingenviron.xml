@@ -41,9 +41,10 @@ EOF</userinput></screen>
 <screen><userinput>cat &gt; ~/.bashrc &lt;&lt; "EOF"
 <literal>set +h
 umask 022
-LFS=/mnt/lfs
+LFS=/mnt/kuznix
+KUZNIX=/mnt/kuznix
 LC_ALL=POSIX
-LFS_TGT=$(uname -m)-lfs-linux-gnu
+LFS_TGT=$(uname -m)-kuznix-linux-gnu
 PATH=/usr/bin
 if [ ! -L /bin ]; then PATH=/bin:$PATH; fi
 PATH=$LFS/tools/bin:$PATH
@@ -101,7 +102,7 @@ EOF</userinput></screen>
     </varlistentry>
 
     <varlistentry>
-      <term><parameter>LFS_TGT=$(uname -m)-lfs-linux-gnu</parameter></term>
+      <term><parameter>LFS_TGT=$(uname -m)-kuznix-linux-gnu</parameter></term>
       <listitem>
   <para>The <envar>LFS_TGT</envar> variable sets a non-default, but compatible machine
   description for use when building our cross-compiler and linker and when
