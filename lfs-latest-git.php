@@ -64,8 +64,8 @@ function find_even_max( $lines, $regex_match, $regex_replace )
 
 function http_get_file( $url )
 {
-  //$url = preg_replace( "/ftpmirror.gnu.org/", "mirrors.ibiblio.org/gnu", $url );
-  $url = preg_replace( "/ftpmirror.gnu.org/", "mirrors.dotsrc.org/gnu", $url );
+  $url = preg_replace( "/ftpmirror.gnu.org/", "mirrors.ibiblio.org/gnu", $url );
+  //$url = preg_replace( "/ftpmirror.gnu.org/", "mirrors.dotsrc.org/gnu", $url );
 
   if ( preg_match( "/mpfr/", $url ) )
   {
@@ -131,11 +131,13 @@ if ( $package == "file"       ) $dirpath = "https://github.com/file/file/tags";
 if ( $package == "flex"       ) $dirpath = github("westes/flex");
 if ( $package == "flit_core"  ) $dirpath = "https://pypi.org/rss/project/flit-core/releases.xml";
 if ( $package == "gcc"        ) $dirpath = max_parent( $dirpath, "gcc-" );
+if ( $package == "gzip"       ) $dirpath = "https://ftp.gnu.org/gnu/gzip";
 if ( $package == "iana-etc"   ) $dirpath = github("Mic92/iana-etc");
 if ( $package == "intltool"   ) $dirpath = "https://launchpad.net/intltool/trunk";
 if ( $package == "jinja"      ) $dirpath = "https://pypi.org/rss/project/jinja2/releases.xml";
 if ( $package == "libffi"     ) $dirpath = github("libffi/libffi");
 if ( $package == "libpipeline") $dirpath = "https://download-mirror.savannah.gnu.org/releases/libpipeline";
+if ( $package == "libtool"    ) $dirpath = "https://www.gnu.org/software/libtool";
 if ( $package == "libxcrypt"  ) $dirpath = github("besser82/libxcrypt");
 if ( $package == "linux"      ) $dirpath = "https://www.kernel.org/pub/linux/kernel/v7.x";
 if ( $package == "lz4"        ) $dirpath = github("lz4/lz4");
@@ -153,6 +155,8 @@ if ( $package == "pcre2"      ) $dirpath = github("PCRE2Project/pcre2");
 if ( $package == "procps-ng"  ) $dirpath = "https://gitlab.com/procps-ng/procps/-/tags";
 if ( $package == "psmisc"     ) $dirpath = "https://gitlab.com/psmisc/psmisc/-/tags";
 if ( $package == "Python"     ) $dirpath = "https://www.python.org/downloads/source/";
+if ( $package == "readline"   ) $dirpath = "https://tiswww.case.edu/php/chet/readline/rltop.html";
+if ( $package == "sed"        ) $dirpath = "https://ftp.gnu.org/gnu/sed";
 if ( $package == "setuptools" ) $dirpath = "https://pypi.org/rss/project/setuptools/releases.xml";
 if ( $package == "shadow"     ) $dirpath = github("shadow-maint/shadow");
 if ( $package == "sqlite-autoconf" ) $dirpath = "https://sqlite.org/download.html";
@@ -160,7 +164,8 @@ if ( $package == "sqlite-doc" ) $dirpath = "https://sqlite.org/download.html";
 if ( $package == "sysvinit"   ) $dirpath = github("slicer69/sysvinit");
 if ( $package == "sysklogd"   ) $dirpath = github("troglobit/sysklogd");
 if ( $package == "systemd"    ) $dirpath = github("systemd/systemd");
-if ( $package == "tcl"        ) $dirpath = "https://www.tcl.tk/software/tcltk/download.html";
+#if ( $package == "tcl"        ) $dirpath = "https://www.tcl.tk/software/tcltk/download.html";
+if ( $package == "tcl"        ) $dirpath = "https://sourceforge.net/projects/tcl/files/Tcl/";
 if ( $package == "util-linux" ) $dirpath = max_parent( $dirpath, "v." );
 if ( $package == "vim"        ) $dirpath = "https://github.com/vim/vim/tags";
 if ( $package == "wheel"      ) $dirpath = "https://pypi.org/rss/project/wheel/releases.xml";
@@ -238,6 +243,9 @@ if ( $package == "zstd"       ) $dirpath = github("facebook/zstd");
   if ( $package == "elfutils" )
      return find_max( $lines, "/^\d/", "/^(\d[\d\.]+\d)\/.*$/" );
 
+  if ( $package == "gzip" )
+     return find_max( $lines, "/gzip-/", "/^.*gzip-([\d\.]+)\.tar.*$/" );
+
   if ( $package == "XML-Parser" )
   {
      $max = find_max( $lines, "/$package/", "/^.*$package-([\d\._]*\d).tar.*$/" );
@@ -247,7 +255,7 @@ if ( $package == "zstd"       ) $dirpath = github("facebook/zstd");
   }
 
   if ( $package == "tcl" )
-     return find_max( $lines, "/tcl8/", "/^.*tcl(\d\.[\d\.]*\d)-src.*$/" );
+     return find_max( $lines, "/Tcl.8/", "/^.*Tcl.(\d\.[\d\.]*\d)\/.*$/" );
 
   if ( $package == "gmp" )
      return find_max( $lines, "/$package/", "/^.*$package-([\d\._]*\d[a-z]?).tar.*$/" );
@@ -280,6 +288,9 @@ if ( $package == "zstd"       ) $dirpath = github("facebook/zstd");
   if ( $package == "jinja" )
      return find_max( $lines, "/jinja2\/\d/", "/^.*jinja2\/([\d\.]+).*$/" );
 
+  if ( $package == "libtool" )
+     return find_max( $lines, "/libtool-/", "/^.*libtool-([\d\.]+)\.tar.*$/" );
+
   if ( $package == "wheel" )
      return find_max( $lines, "/wheel\/\d/", "/^.*wheel\/([\d\.]+).*$/" );
   # End Python modules
@@ -289,6 +300,12 @@ if ( $package == "zstd"       ) $dirpath = github("facebook/zstd");
 
   if ( $package == "pcre2" )
      return find_max( $lines, '/name.:/', '/^.*pcre2-([\d\.]+\d).*$/' );
+
+  if ( $package == "readline" )
+     return find_max( $lines, '/readline-/', '/^.*readline-([\d\.]+\d)\..*$/' );
+
+  if ( $package == "sed" )
+     return find_max( $lines, '/sed-/', '/^.*sed-([\d\.]+\d)\.tar.*$/' );
 
   if ( $package == "sqlite-autoconf" )
      return find_max( $lines, '/autoconf/', '/^.*autoconf-(\d+).tar.*$/' );
